@@ -6,6 +6,10 @@
 - 支持打印请求日志，输出请求路径、参数和返回结果。默认不打印。
  
 ### 使用方法
+先在需要地方引入库文件
+
+    import {get,post,upload,download} from "../../utils/networkUtil.js"
+
 GET请求：
 
     get("/posts/1").then(data=>{
@@ -16,7 +20,11 @@ POST请求：
 
     post("/posts").then(data=>{
         this.setData({result:JSON.stringify(data)});
-    })
+    },fail=>{
+    	console.log(fail);//请求失败
+    })
+ 
+用then方法接受返回参数，第一个参数是成功回调，第二个是失败回调，两个回调都是可选的
 
 传参：
  
@@ -41,7 +49,7 @@ POST请求：
 
 
 ### 与微信原生请求库对比
- 
+
 使用前 
 
     wx.request({
@@ -71,10 +79,10 @@ POST请求：
     })
 
 
- 使用后
+使用后
  
       post("/user/authorization", {code: res.code}, true)
         .then(data => {
-            this.globalData.userInfo = res.userInfo;//可以用this了！
+            this.globalData.userInfo = res.userInfo; // 可以用this了！
         });
- 
+
