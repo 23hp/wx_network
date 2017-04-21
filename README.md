@@ -1,4 +1,5 @@
-# 微信网络请求框架
+# 网络请求库-微信小程序
+使用 Promise 封装的微信小程序网络请求库
 ### 功能
 - 支持微信支持的所有请求方式，支持上传下载
 - 加载时显示加载框，错误时显示错误提示框。默认显示。
@@ -6,3 +7,74 @@
  
 ### 使用方法
 GET请求：
+
+    get("/posts/1").then(data=>{
+        this.setData({result:JSON.stringify(data)});
+    })
+
+POST请求：
+
+    post("/posts").then(data=>{
+        this.setData({result:JSON.stringify(data)});
+    })
+
+传参：
+ 
+    get("/comments",{postId:1}).then(data=>{
+        this.setData({result:JSON.stringify(data)});
+    })
+
+请求方法的参数配置：
+
+	/**
+	 * 发送get 请求
+	 * @param relativeUrl 相对路径
+	 * @param param 参数，可选
+	 * @param showLog 是否打印日志
+	 * @param showLoading 是否显示加载框
+	 * @param showError 是否显示错误框
+	 * @returns {Promise}
+	 */
+	export function get(relativeUrl, param = {}, showLog = false, showLoading = true, showError = true) {
+	    return request("GET", relativeUrl, param, showLog, showLoading, showError);
+	}
+
+
+### 与微信原生请求库对比
+ 
+使用前 
+
+    wx.request({
+        url: that.config.domainName + '/user/authorization',
+        method: "POST",
+        header: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+            code: res.code
+        },
+        success(data){
+            console.log(data);
+            if(data.status && data.status.succeed==1) {
+                that.globalData.userInfo = res.userInfo;
+            }else {
+                wx.showToast({
+                    title: "获取数据失败"
+                });
+            }
+        },
+        fail(){
+            wx.showToast({
+                title: "连接服务器失败"
+            });
+        }
+    })
+
+
+ 使用后
+ 
+      post("/user/authorization", {code: res.code}, true)
+        .then(data => {
+            this.globalData.userInfo = res.userInfo;//可以用this了！
+        });
+ 
