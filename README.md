@@ -1,5 +1,6 @@
 # 网络请求库-微信小程序
 使用 Promise 封装的微信小程序网络请求库
+![请求示例](https://github.com/23hp/wx_network/blob/master/pic_loading.jpg)
 ### 功能
 - 支持微信支持的所有请求方式，支持上传下载
 - 加载时显示加载框，错误时显示错误提示框。默认显示。
