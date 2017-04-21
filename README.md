@@ -5,10 +5,16 @@
 - 加载时显示加载框，错误时显示错误提示框。默认显示。
 - 支持打印请求日志，输出请求路径、参数和返回结果。默认不打印。
  
-### 使用方法
-先在需要地方引入库文件
+### 目录说明
+- example 微信小程序的演示项目，
+- core 封装的请求库。
 
-    import {get,post,upload,download} from "../../utils/networkUtil.js"
+### 使用方法
+1. 复制core目录下的network.js文件到你的项目目录，如utils文件夹下
+2. 在需要地方引入库文件
+
+
+    import {get,post,upload,download} from "../../utils/network.js"
 
 GET请求：
 
@@ -27,12 +33,12 @@ POST请求：
 
 用then方法接受返回参数，第一个参数是成功回调，第二个是失败回调，两个回调都是可选的
 
-请求方法的参数配置：
+看看get方法都有哪些入参：
 
 	/**
 	 * 发送get 请求
-	 * @param relativeUrl 相对路径
-	 * @param param 参数，可选
+	 * @param relativeUrl 相对路径【必选】
+	 * @param param 参数
 	 * @param showLog 是否打印日志
 	 * @param showLoading 是否显示加载框
 	 * @param showError 是否显示错误框
