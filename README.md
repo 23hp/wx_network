@@ -12,25 +12,20 @@
 
 GET请求：
 
-    get("/posts/1").then(data=>{
-        this.setData({result:JSON.stringify(data)});
-    })
+    get("/comments",{postId:1})
+        .then(data=>{
+            this.setData({result:JSON.stringify(data)});// 可以用this了！
+        })
 
 POST请求：
 
     post("/posts").then(data=>{
-        this.setData({result:JSON.stringify(data)});
-    },fail=>{
-    	console.log(fail);//请求失败
-    })
- 
-用then方法接受返回参数，第一个参数是成功回调，第二个是失败回调，两个回调都是可选的
+            this.setData({result:JSON.stringify(data)});
+        },fail=>{
+            console.log(fail);//请求失败
+        })
 
-传参：
- 
-    get("/comments",{postId:1}).then(data=>{
-        this.setData({result:JSON.stringify(data)});
-    })
+用then方法接受返回参数，第一个参数是成功回调，第二个是失败回调，两个回调都是可选的
 
 请求方法的参数配置：
 
@@ -78,11 +73,10 @@ POST请求：
         }
     })
 
-
 使用后
  
       post("/user/authorization", {code: res.code}, true)
         .then(data => {
-            this.globalData.userInfo = res.userInfo; // 可以用this了！
-        });
+            this.globalData.userInfo = res.userInfo; 
+        });
 
