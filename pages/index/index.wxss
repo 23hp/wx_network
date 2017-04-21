@@ -1,0 +1,4 @@
+/**index.wxss**/
+.marginTop20{
+  margin-top: 20rpx;
+}
