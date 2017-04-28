@@ -60,6 +60,7 @@ function request(method = "GET", relativeUrl, param = {}, showLog = false, showL
             url: rootUrl + relativeUrl,
             method: method,
             data: param || {},
+            // header: {'content-type': 'application/json'},//按实际需求添加header
             success (res) {
                 resolve(res.data);
                 if (showLog) console.log("服务器返回数据：", res.data);

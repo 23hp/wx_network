@@ -59,7 +59,7 @@ function request(method = "GET", relativeUrl, param = {}, showLog = false, showL
         wx.request({
             url: rootUrl + relativeUrl,
             method: method,
-            header: {'content-type': 'application/x-www-form-urlencoded'},
+            header: {'content-type': 'application/x-www-form-urlencoded'},//按实际需求修改header
             data: param || {},
             success (res) {
                 resolve(res.data);
