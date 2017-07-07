@@ -1,9 +1,13 @@
 <!--index.wxml-->
-<view class="container">
-    <view>发送请求：</view>
-    <button class="marginTop20" bindtap="loadGet">GET</button>
-    <button class="marginTop20" bindtap="loadPost">POST</button>
-    <view class="marginTop20">
-        {{result}}
-    </view>
+<view>发送请求：</view>
+<view class="btnContainer marginTop20">
+    <button size="mini" bindtap="loadGet">GET</button>
+    <button size="mini" bindtap="loadPost">POST</button>
+    <button size="mini" bindtap="loadAndHandleException">处理异常</button>
+    <button size="mini" bindtap="loadWithDialog">请求时显示加载框</button>
+    <button size="mini" bindtap="multiRequest">多个请求连续</button>
 </view>
+<view class="marginTop20">返回值：</view>
+<text class="result">
+    {{result}}
+</text>

@@ -1,54 +1,96 @@
 # 网络请求库-微信小程序
-使用 Promise 封装的微信小程序网络请求库
 
+使用 Promise 封装的微信小程序网络请求库
 ![请求示例](https://github.com/23hp/wx_network/blob/master/pic_loading.jpg)
+
 ### 功能
-- 支持微信支持的所有请求方式，支持上传下载
-- 加载时显示加载框，错误时显示错误提示框。默认显示。
-- 支持打印请求日志，输出请求路径、参数和返回结果。默认不打印。
+
+- 默认打印请求日志，输出请求路径、参数和返回结果
+- 支持多重连续请求
+- 方便的错误处理
  
 ### 目录说明
 - example 微信小程序的演示项目，
-- core 封装的请求库。
+- util 封装的请求库。
 
 ### 使用方法
 1. 复制core目录下的network.js文件到你的项目目录，如utils文件夹下
 2. 在需要地方引入库文件
 
 
-    import {get,post,upload,download} from "../../utils/network.js"
+## 小程序网络请求最佳实践
 
-GET请求：
 
-    get("/comments",{postId:1})
-        .then(data=>{
-            this.setData({result:JSON.stringify(data)});// 可以用this了！
+    import {get, post} from "../../util/network.js"
+
+    // 发送GET请求
+    loadGet(){
+        get("/posts/1").then(data => {
+            this.setData({result: JSON.stringify(data)});
         })
-
-POST请求：
-
-    post("/posts").then(data=>{
-            this.setData({result:JSON.stringify(data)});
-        },fail=>{
-            console.log(fail);//请求失败
+    },
+    // 发送POST请求
+    loadPost(){
+        post("/posts", {id: 2}).then(data => {
+            this.setData({result: JSON.stringify(data)});
         })
+    },
+    // 处理失败与异常
+    loadAndHandleException(){
+        get("/posts/3").then(data => {
+            throw '我出错了！'
+        }).catch(e => {
+            wx.showToast({title: '加载失败：' + e.toString(), image: '/image/warn.png'})
+        })
+    },
+    // 显示加载框
+    loadWithDialog(){
+        wx.showLoading({title: '加载中'});
+        get("/posts/4").then(data => {
+            this.setData({result: JSON.stringify(data)});
+            wx.hideLoading();
+        }).catch(e => {
+            wx.showToast({title: '加载失败' + e.toString(), image: '/image/warn.png'})
+        })
+    },
+    //连续的请求
+    multiRequest(){
+        wx.showLoading({title: '加载中'});
+        get("/posts/11")
+            .then(data1 => {
+                let result = JSON.stringify(data1);
+                this.setData({result: result});
+                return get("/posts/12");
+            })
+            .then(data2 => {
+                let result = this.data.result + '\n' + JSON.stringify(data2);
+                this.setData({result: result});
+                return get("/posts/13");
+            })
+            .then(data3 => {
+                let result = this.data.result + '\n' + JSON.stringify(data3);
+                this.setData({result: result});
+            })
+            .then(() => {
+                wx.hideLoading();
+            })
+            .catch(e => {
+                wx.showToast({title: '加载失败' + e.toString(), image: '/image/warn.png'})
+            })
+    }
 
-用then方法接受返回参数，第一个参数是成功回调，第二个是失败回调，两个回调都是可选的
+看看POST方法都有哪些入参：
 
-看看get方法都有哪些入参：
-
-	/**
-	 * 发送get 请求
-	 * @param relativeUrl 相对路径【必选】
-	 * @param param 参数
-	 * @param showLog 是否打印日志
-	 * @param showLoading 是否显示加载框
-	 * @param showError 是否显示错误框
-	 * @returns {Promise}
-	 */
-	export function get(relativeUrl, param = {}, showLog = false, showLoading = true, showError = true) {
-	    return request("GET", relativeUrl, param, showLog, showLoading, showError);
-	}
+    /**
+     * 发送POST请求
+     * @param relativeUrl 相对路径 必填
+     * @param param 参数 可选
+     * @param header 请求头参数 可选
+     * @returns {Promise}
+     */
+    export function post(relativeUrl,param,header) {
+        return request("POST", relativeUrl, param,header);
+    }
 
 
 ### 与微信原生请求库对比
@@ -83,8 +125,11 @@ POST请求：
 
 使用后
  
-      post("/user/authorization", {code: res.code}, true)
+      post("/user/authorization", {code: res.code})
         .then(data => {
             this.globalData.userInfo = res.userInfo; 
+        })
+        .catch(e => {
+            wx.showToast({title: '加载失败：' + e.toString(), image: '/image/warn.png'})
         });
 
