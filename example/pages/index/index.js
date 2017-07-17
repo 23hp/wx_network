@@ -22,7 +22,7 @@ Page({
         get("/posts/3").then(data => {
             throw '我出错了！'
         }).catch(e => {
-            wx.showToast({title: '加载失败：' + e.toString(), image: '/image/warn.png'})
+            wx.showToast({title: '加载失败：' +JSON.stringify(e), image: '/image/warn.png'})
         })
     },
     // 显示加载框
@@ -32,7 +32,7 @@ Page({
             this.setData({result: JSON.stringify(data)});
             wx.hideLoading();
         }).catch(e => {
-            wx.showToast({title: '加载失败' + e.toString(), image: '/image/warn.png'})
+            wx.showToast({title: '加载失败' + JSON.stringify(e), image: '/image/warn.png'})
         })
     },
     //连续的请求
@@ -57,7 +57,7 @@ Page({
                 wx.hideLoading();
             })
             .catch(e => {
-                wx.showToast({title: '加载失败' + e.toString(), image: '/image/warn.png'})
+                wx.showToast({title: '加载失败' + JSON.stringify(e), image: '/image/warn.png'})
             })
     }
 })

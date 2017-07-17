@@ -30,20 +30,23 @@
             this.setData({result: JSON.stringify(data)});
         })
     },
+
     // 发送POST请求
     loadPost(){
         post("/posts", {id: 2}).then(data => {
             this.setData({result: JSON.stringify(data)});
         })
     },
+
     // 处理失败与异常
     loadAndHandleException(){
         get("/posts/3").then(data => {
             throw '我出错了！'
         }).catch(e => {
-            wx.showToast({title: '加载失败：' + e.toString(), image: '/image/warn.png'})
+            wx.showToast({title: '加载失败：' + JSON.stringify(e), image: '/image/warn.png'})
         })
     },
+
     // 显示加载框
     loadWithDialog(){
         wx.showLoading({title: '加载中'});
@@ -51,9 +54,10 @@
             this.setData({result: JSON.stringify(data)});
             wx.hideLoading();
         }).catch(e => {
-            wx.showToast({title: '加载失败' + e.toString(), image: '/image/warn.png'})
+            wx.showToast({title: '加载失败' + JSON.stringify(e), image: '/image/warn.png'})
         })
     },
+
     //连续的请求
     multiRequest(){
         wx.showLoading({title: '加载中'});
@@ -76,7 +80,7 @@
                 wx.hideLoading();
             })
             .catch(e => {
-                wx.showToast({title: '加载失败' + e.toString(), image: '/image/warn.png'})
+                wx.showToast({title: '加载失败' + JSON.stringify(e), image: '/image/warn.png'})
             })
     }
 
@@ -131,6 +135,6 @@
             this.globalData.userInfo = res.userInfo; 
         })
         .catch(e => {
-            wx.showToast({title: '加载失败：' + e.toString(), image: '/image/warn.png'})
+            wx.showToast({title: '加载失败：' + JSON.stringify(e), image: '/image/warn.png'})
         });
 
