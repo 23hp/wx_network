@@ -1,13 +1,19 @@
 <!--index.wxml-->
 <view>发送请求：</view>
 <view class="btnContainer marginTop20">
-    <button size="mini" bindtap="loadGet">GET</button>
-    <button size="mini" bindtap="loadPost">POST</button>
-    <button size="mini" bindtap="loadAndHandleException">处理异常</button>
-    <button size="mini" bindtap="loadWithDialog">请求时显示加载框</button>
-    <button size="mini" bindtap="multiRequest">多个请求连续</button>
+    <button size="mini" bindtap="loadOne">单个请求</button>
+    <button size="mini" bindtap="loadWithDialog">带加载框和错误提示</button>
+    <button size="mini" bindtap="loadOneByOne">顺序执行多个请求</button>
+    <button size="mini" bindtap="loadMany">同时执行多个请求</button>
 </view>
 <view class="marginTop20">返回值：</view>
-<text class="result">
-    {{result}}
-</text>
+<view class="result">
+    <view wx:if="{{photo1}}" class="photo">
+        <image src="{{photo1.thumbnailUrl}}" mode="widthFix"/>
+        <text>{{photo1.title}}</text>
+    </view>
+    <view wx:if="{{photo2}}" class="photo">
+        <image src="{{photo2.thumbnailUrl}}" mode="widthFix"/>
+        <text>{{photo2.title}}</text>
+    </view>
+</view>

@@ -1,63 +1,58 @@
 //index.js
-//引入网络库
-import {get, post} from "../../util/network.js"
+//引入接口
+import {getPhoto} from "../../util/service";
+
 Page({
     data: {
-        result: '尝试发起请求',
+        photo1: null,
+        photo2: null,
     },
-    // 发送GET请求
-    loadGet(){
-        get("/posts/1").then(data => {
-            this.setData({result: JSON.stringify(data)});
+    //数据清零
+    reset(){
+        this.setData({
+            photo1: null,
+            photo2: null,
         })
     },
-    // 发送POST请求
-    loadPost(){
-        post("/posts", {id: 2}).then(data => {
-            this.setData({result: JSON.stringify(data)});
-        })
+    // 单个请求
+    loadOne() {
+        this.reset(); //数据清零
+        getPhoto(1).then(data => this.setData({photo1: data}));
     },
-    // 处理失败与异常
-    loadAndHandleException(){
-        get("/posts/3").then(data => {
-            throw '我出错了！'
-        }).catch(e => {
-            wx.showToast({title: '加载失败：' +JSON.stringify(e), image: '/image/warn.png'})
-        })
-    },
-    // 显示加载框
-    loadWithDialog(){
+    // 带加载框和错误提示
+    loadWithDialog() {
+        this.reset();
         wx.showLoading({title: '加载中'});
-        get("/posts/4").then(data => {
-            this.setData({result: JSON.stringify(data)});
+        getPhoto(2).then(data => {
+            this.setData({photo1: data});
             wx.hideLoading();
+            // throw '我出错了！'   //todo 你可以尝试抛出一个异常
         }).catch(e => {
-            wx.showToast({title: '加载失败' + JSON.stringify(e), image: '/image/warn.png'})
+            wx.showToast({title: '请求失败', image: '/image/warn.png'});
+            console.error('请求失败',e);
         })
     },
-    //连续的请求
-    multiRequest(){
-        wx.showLoading({title: '加载中'});
-        get("/posts/11")
-            .then(data1 => {
-                let result = JSON.stringify(data1);
-                this.setData({result: result});
-                return get("/posts/12");
-            })
-            .then(data2 => {
-                let result = this.data.result + '\n' + JSON.stringify(data2);
-                this.setData({result: result});
-                return get("/posts/13");
-            })
-            .then(data3 => {
-                let result = this.data.result + '\n' + JSON.stringify(data3);
-                this.setData({result: result});
-            })
-            .then(() => {
-                wx.hideLoading();
-            })
-            .catch(e => {
-                wx.showToast({title: '加载失败' + JSON.stringify(e), image: '/image/warn.png'})
-            })
-    }
-})
+    // 多个请求(顺序请求)
+    loadOneByOne() {
+        this.reset();
+        getPhoto(3)
+            .then(data => {
+                    this.setData({photo1: data});
+                    return getPhoto(4);
+                }
+            ).then(data =>
+            this.setData({photo2: data})
+        );
+
+    },
+    // 多个请求(同时请求)
+    loadMany() {
+        this.reset();
+        Promise.all([getPhoto(5), getPhoto(6)]).then(listData => {
+            this.setData({
+                photo1: listData[0],
+                photo2: listData[1],
+            });
+        });
+    },
+});
