@@ -1,3 +1,6 @@
+/**
+ * 此文件管理项目所有接口
+ */
 import {get, post, put, del} from './network';
 
 /**
