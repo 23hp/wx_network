@@ -14,7 +14,7 @@
  * @param url 请求路径 必填
  * @param data 请求参数 get请求的参数会自动拼到地址后面
  */
-export const get = (url, data) => request('GET', url, data);
+export const get = (url, data, headers) => request('GET', url, data, headers);
 
 /**
  * 发起post请求
@@ -35,7 +35,7 @@ export const put = (url, data, headers) => request('PUT', url, data, headers);
  * @param url 请求路径 必填
  * @param data 请求参数 delete请求的参数会自动拼到地址后面
  */
-export const del = (url, data) => request('DELETE', url, data);
+export const del = (url, data, headers) => request('DELETE', url, data, headers);
 
 /**
  * 接口请求基类方法
