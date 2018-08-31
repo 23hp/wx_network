@@ -13,6 +13,8 @@
  * 发起get请求
  * @param url 请求路径 必填
  * @param data 请求参数 get请求的参数会自动拼到地址后面
+ * @param headers 请求头 选填
+ * @returns {Promise}
  */
 export const get = (url, data, headers) => request('GET', url, data, headers);
 
@@ -20,20 +22,24 @@ export const get = (url, data, headers) => request('GET', url, data, headers);
  * 发起post请求
  * @param url 请求路径 必填
  * @param data 请求参数
- * @param headers 请求头
+ * @param headers 请求头 选填
+ * @returns {Promise}
  */
 export const post = (url, data, headers) => request('POST', url, data, headers);
 /**
  * 发起put请求
  * @param url 请求路径 必填
  * @param data 请求参数
- * @param headers 请求头
+ * @param headers 请求头 选填
+ * @returns {Promise}
  */
 export const put = (url, data, headers) => request('PUT', url, data, headers);
 /**
  * 发起delete请求
  * @param url 请求路径 必填
  * @param data 请求参数 delete请求的参数会自动拼到地址后面
+ * @param headers 请求头 选填
+ * @returns {Promise}
  */
 export const del = (url, data, headers) => request('DELETE', url, data, headers);
 
@@ -42,7 +48,7 @@ export const del = (url, data, headers) => request('DELETE', url, data, headers)
  * @param method 请求方法 必填
  * @param url 请求路径 必填
  * @param data 请求参数
- * @param header 请求头
+ * @param header 请求头 选填
  * @returns {Promise}
  */
 export function request(method, url, data, header = {'Content-Type': 'application/json'}) {
