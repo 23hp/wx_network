@@ -52,7 +52,9 @@ export const del = (url, data, headers) => request('DELETE', url, data, headers)
  * @returns {Promise}
  */
 export function request(method, url, data, header = {'Content-Type': 'application/json'}) {
-  console.info(method, url);
+    console.group('==============>新请求<==============');
+    console.info(method, url);
+    if(data) console.info('参数：',data);
     return new Promise((resolve, reject) => {
         const response = {};
         wx.request({
@@ -60,16 +62,13 @@ export function request(method, url, data, header = {'Content-Type': 'applicatio
             success: (res) => response.success = res.data,
             fail: (error) => response.fail = error,
             complete() {
-                console.group('==============>请求开始<==============');
-                console.info(method, url);
                 if (response.success) {
-                    console.info('请求成功', response.success);
+                    console.info('请求成功：', response.success);
                     resolve(response.success)
                 } else {
-                    console.info('请求失败', response.fail);
+                    console.info('请求失败：', response.fail);
                     reject(response.fail)
                 }
-                console.info('==============>请求结束<==============');
                 console.groupEnd();
             },
         });
